@@ -1,55 +1,35 @@
 package com.gildedrose;
 
+import java.util.HashMap;
+import java.util.Map;
+
 class GildedRose {
     Item[] items;
-
+    Map<String, ItemStrategy> strategies;
     public GildedRose(Item[] items) {
         this.items = items;
+        strategies = new HashMap<>();
+
+        // Registeration the strategies for each item type
+        strategies.put("Aged Brie", new AgedBrieStrategy());
+        strategies.put("Sulfuras, Hand of Ragnaros", new SulfurasStrategy());
+        strategies.put("Backstage passes to a TAFKAL80ETC concert", new BackstagePassStrategy());
+        strategies.put("Conjured Mana Cake", new ConjuredStrategy());
+        strategies.put("default", new DefaultStrategy());
     }
 
     public void updateQuality() {
-        for (int i = 0; i < items.length; i++) {
-            Item item = items[i];
-
-            switch (item.name) {
-
-                case "Aged Brie":
-                    if (item.quality < 50) item.quality++;
-                    break;
-
-                case "Backstage passes to a TAFKAL80ETC concert":
-                    if (item.quality < 50) item.quality++;
-                    if (item.sellIn < 11 && item.quality < 50) item.quality++;
-                    if (item.sellIn < 6 && item.quality < 50) item.quality++;
-                    if (item.sellIn < 0) item.quality = 0;
-                    break;
-
-                case "Sulfuras, Hand of Ragnaros":
-                    break;
-
-                case "Conjured Mana Cake":
-                    if (item.quality > 0) item.quality -= 2;
-                    break;
-
-                default:
-                    if (item.quality > 0) item.quality--;
-                    break;
-            }
+        for (Item item : items) {
+            ItemStrategy strategy = strategies.getOrDefault(item.name, strategies.get("default"));
+            strategy.updateQuality(item);
 
             if (!item.name.equals("Sulfuras, Hand of Ragnaros")) {
                 item.sellIn--;
             }
 
             if (item.sellIn < 0) {
-                if (!item.name.equals("Aged Brie")) {
-                    if (!item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                        if (item.quality > 0) item.quality--;
-                    } else {
-                        item.quality = 0;
-                    }
-                } else {
-                    if (item.quality < 50) item.quality++;
-                }
+                // Handling expired items using the default strategy
+                strategies.getOrDefault(item.name, strategies.get("default")).updateQuality(item);
             }
         }
     }
