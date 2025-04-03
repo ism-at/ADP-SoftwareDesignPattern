@@ -11,8 +11,12 @@ public class ItemFactory {
             case "Backstage passes to a GALLA concert":
                 return new BackstagePassGalla(sellIn, quality);
 
+            case "Conjured Mana Cake":
+                Item conjuredItem = new Conjured(sellIn, quality);
+                return new ConjuredDecorator(conjuredItem);
+
             default:
-                throw new IllegalArgumentException("Unknown item type: " + itemName);
+                throw new IllegalArgumentException("Unknown item :" + itemName);
         }
     }
 }

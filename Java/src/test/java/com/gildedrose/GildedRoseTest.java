@@ -31,7 +31,7 @@ class GildedRoseTest {
 
     @Test
     void testConjured() {
-        Item[] items = new Item[] { new Conjured("Conjured Mana Cake", 3, 6) };
+        Item[] items = new Item[] { new Conjured( 3, 6) };
         GildedRose app = new GildedRose(items);
         app.updateQuality();
         assertEquals(4, app.items[0].quality);
@@ -78,4 +78,13 @@ class GildedRoseTest {
         app.updateQuality();
         assertEquals(22, app.items[0].quality); // Quality should increase by 2
     }
+
+    @Test
+    void testConjuredItem() {
+        Item[] items = new Item[] { new Conjured(3, 6) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals(4, app.items[0].quality);
+    }
+
 }
