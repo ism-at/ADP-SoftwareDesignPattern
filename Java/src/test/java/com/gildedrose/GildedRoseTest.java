@@ -62,4 +62,20 @@ class GildedRoseTest {
         app.updateQuality();
         assertEquals(0, app.items[0].quality);
     }
+
+    @Test
+    void testBackstagePassTAFKAL80ETC() {
+        Item[] items = new Item[] { new BackstagePassTAFKAL80ETC(15, 20) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals(21, app.items[0].quality); // Quality should increase by 1
+    }
+
+    @Test
+    void testBackstagePassGalla() {
+        Item[] items = new Item[] { new BackstagePassGalla(15, 20) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals(22, app.items[0].quality); // Quality should increase by 2
+    }
 }
