@@ -16,5 +16,7 @@ public class AgedBrie extends Item {
         if (sellIn < 0 && quality < 50) {
             quality++;
         }
+
+        notifyObservers();
     }
 }
